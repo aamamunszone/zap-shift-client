@@ -1,6 +1,7 @@
 import React from 'react';
 import HeroSection from './components/HeroSection/HeroSection';
 import HowItWorks from './components/HowItWorks/HowItWorks';
+import OurServices from './components/OurServices/OurServices';
 
 const Home = () => {
   return (
@@ -15,6 +16,11 @@ const Home = () => {
       {/* How It Works Section */}
       <section>
         <HowItWorks />
+      </section>
+
+      {/* Our Services Section */}
+      <section>
+        <OurServices />
       </section>
     </div>
   );
