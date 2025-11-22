@@ -7,7 +7,7 @@ const MainLayout = () => {
   return (
     <div className="flex flex-col justify-between min-h-screen">
       {/* Header Section */}
-      <header>
+      <header className="sticky top-6 z-50 my-6">
         <Header />
       </header>
 

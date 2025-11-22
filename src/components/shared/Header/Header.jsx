@@ -19,7 +19,7 @@ const Header = () => {
   );
 
   return (
-    <Container className="sticky top-6 z-50 my-6 bg-base-100/70 backdrop-blur-sm rounded-xl px-8 py-5 w-full">
+    <Container className="bg-base-100/80 backdrop-blur-sm rounded-xl px-8 py-5 w-full">
       <div className="navbar p-0 min-h-0">
         {/* Logo */}
         <div className="navbar-start">
