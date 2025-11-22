@@ -1,11 +1,11 @@
 import React from 'react';
-import logo from '../../../assets/logos/zap-shift-logo.png';
+import logoImage from '../../../assets/logos/zap-shift-logo.png';
 
 const Logo = () => {
   return (
     <div className="flex">
       <img
-        src={logo}
+        src={logoImage}
         alt="ZapShift Logo"
         className="w-full h-full object-cover"
       />

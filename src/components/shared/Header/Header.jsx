@@ -6,7 +6,7 @@ import NavItem from './NavItem/NavItem';
 
 const Header = () => {
   const navItems = [
-    { path: '/', label: 'Home', public: true },
+    { path: '/home', label: 'Home', public: true },
     { path: '/services', label: 'Services', public: true },
     { path: '/coverage', label: 'Coverage', private: true },
     { path: '/pricing', label: 'Pricing', public: true },
@@ -19,7 +19,7 @@ const Header = () => {
   );
 
   return (
-    <Container className="sticky top-6 z-50 mt-6 bg-base-100/70 backdrop-blur-sm rounded-xl px-8 py-5 w-full">
+    <Container className="sticky top-6 z-50 my-6 bg-base-100/70 backdrop-blur-sm rounded-xl px-8 py-5 w-full">
       <div className="navbar p-0 min-h-0">
         {/* Logo */}
         <div className="navbar-start">
@@ -41,10 +41,10 @@ const Header = () => {
 
         {/* CTA Button */}
         <div className="navbar-end gap-2.5">
-          <Link className="px-5 py-2 text-[#606060] border border-[#DADADA] rounded-md font-medium transition-all duration-300 ease-in-out flex justify-between items-center gap-2">
+          <Link className="px-5 py-2 text-[#606060] border border-[#DADADA] rounded-md font-medium">
             Sign In
           </Link>
-          <Link className="px-5 py-2 text-[#1F1F1F] bg-primary rounded-md font-medium transition-all duration-300 ease-in-out">
+          <Link className="px-5 py-2 text-[#1F1F1F] bg-primary rounded-md font-medium">
             Be a Rider
           </Link>
         </div>
