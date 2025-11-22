@@ -11,7 +11,7 @@ import { Autoplay, EffectFade, Keyboard, Pagination } from 'swiper/modules';
 import { Link } from 'react-router';
 import { FaExternalLinkAlt } from 'react-icons/fa';
 
-const HeroSection = () => {
+const Hero = () => {
   const banners = [banner1, banner2, banner3];
 
   return (
@@ -64,4 +64,4 @@ const HeroSection = () => {
   );
 };
 
-export default HeroSection;
+export default Hero;

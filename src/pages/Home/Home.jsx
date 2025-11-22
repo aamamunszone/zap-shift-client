@@ -1,7 +1,8 @@
 import React from 'react';
-import HeroSection from './components/HeroSection/HeroSection';
+import Hero from './components/Hero/Hero';
 import HowItWorks from './components/HowItWorks/HowItWorks';
 import OurServices from './components/OurServices/OurServices';
+import TrustedBy from './components/TrustedBy/TrustedBy';
 
 const Home = () => {
   return (
@@ -10,7 +11,7 @@ const Home = () => {
 
       {/* Hero Section */}
       <section>
-        <HeroSection />
+        <Hero />
       </section>
 
       {/* How It Works Section */}
@@ -21,6 +22,11 @@ const Home = () => {
       {/* Our Services Section */}
       <section>
         <OurServices />
+      </section>
+
+      {/* Trusted By Section */}
+      <section>
+        <TrustedBy />
       </section>
     </div>
   );
