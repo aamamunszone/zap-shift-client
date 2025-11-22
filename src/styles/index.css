@@ -1,0 +1,27 @@
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
+
+/* Tailwind CSS */
+@import 'tailwindcss';
+
+/* Daisy UI */
+@plugin "daisyui" {
+  themes: light --default;
+}
+@plugin "daisyui/theme" {
+  name: 'light';
+  default: true;
+  --color-primary: #caeb66;
+  --color-secondary: #03373d;
+}
+
+/* Global Styles */
+body {
+  background-color: #eaeced;
+  font-family: 'Urbanist', sans-serif;
+}
+
+/* For Debugging */
+/* * {
+  border: 1px solid red;
+} */
