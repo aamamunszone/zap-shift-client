@@ -23,9 +23,7 @@ const Header = () => {
       <div className="navbar p-0 min-h-0">
         {/* Logo */}
         <div className="navbar-start">
-          <Link to="/">
-            <Logo className="text-[#303030]" />
-          </Link>
+          <Logo className="text-[#303030]" />
         </div>
 
         {/* Desktop Nav */}
@@ -41,7 +39,10 @@ const Header = () => {
 
         {/* CTA Button */}
         <div className="navbar-end gap-2.5">
-          <Link className="px-5 py-2 text-[#606060] border border-[#DADADA] rounded-md font-medium">
+          <Link
+            to="/auth"
+            className="px-5 py-2 text-[#606060] border border-[#DADADA] rounded-md font-medium"
+          >
             Sign In
           </Link>
           <Link className="px-5 py-2 text-[#1F1F1F] bg-primary rounded-md font-medium">
