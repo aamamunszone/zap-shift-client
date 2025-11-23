@@ -4,6 +4,7 @@ import 'leaflet/dist/leaflet.css';
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 import { useLoaderData } from 'react-router';
 import { FiSearch } from 'react-icons/fi';
+import toast from 'react-hot-toast';
 
 const Coverage = () => {
   const position = [23.8103, 90.4125];
@@ -19,6 +20,8 @@ const Coverage = () => {
     if (district) {
       const coord = [district.latitude, district.longitude];
       mapRef.current.flyTo(coord, 13);
+    } else {
+      toast.error('District not found. Please enter a valid name.');
     }
   };
 
