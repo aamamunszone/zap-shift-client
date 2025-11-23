@@ -8,7 +8,7 @@ const Header = () => {
   const navItems = [
     { path: '/home', label: 'Home', public: true },
     { path: '/services', label: 'Services', public: true },
-    { path: '/coverage', label: 'Coverage', private: true },
+    { path: '/coverage', label: 'Coverage', public: true },
     { path: '/pricing', label: 'Pricing', public: true },
     { path: '/be-a-rider', label: 'Be a Rider', private: true },
     { path: '/about-us', label: 'About Us', public: true },
