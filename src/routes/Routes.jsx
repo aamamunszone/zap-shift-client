@@ -1,9 +1,10 @@
-import { createBrowserRouter, Navigate } from 'react-router';
+import { createBrowserRouter, redirect } from 'react-router';
 import MainLayout from '../layouts/MainLayout/MainLayout';
 import Home from '../pages/Home/Home';
 import Coverage from '../pages/Coverage/Coverage';
 import Loader from '../components/common/Loader/Loader';
 import About from '../pages/About/About';
+import NotFound from '../pages/NotFound/NotFound';
 
 export const router = createBrowserRouter([
   // MainLayout Routes
@@ -12,7 +13,7 @@ export const router = createBrowserRouter([
     Component: MainLayout,
     hydrateFallbackElement: <Loader />,
     children: [
-      { index: true, Component: () => <Navigate to="home" replace /> },
+      { index: true, loader: () => redirect('/home') },
       { path: 'home', Component: Home },
       {
         path: 'coverage',
@@ -24,5 +25,11 @@ export const router = createBrowserRouter([
         Component: About,
       },
     ],
+  },
+
+  // Not Found Route
+  {
+    path: '*',
+    element: <NotFound />,
   },
 ]);
