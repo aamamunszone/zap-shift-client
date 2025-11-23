@@ -24,7 +24,7 @@ const Header = () => {
         {/* Logo */}
         <div className="navbar-start">
           <Link to="/">
-            <Logo />
+            <Logo className="text-[#303030]" />
           </Link>
         </div>
 
