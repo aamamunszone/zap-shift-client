@@ -26,7 +26,7 @@ const Coverage = () => {
   };
 
   return (
-    <div className=" mb-6 relative z-10">
+    <div className="mb-6 relative z-10">
       <title>ZapShift | Coverage</title>
 
       {/* Coverage Section */}
