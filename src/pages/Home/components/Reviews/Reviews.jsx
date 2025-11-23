@@ -11,10 +11,10 @@ const Reviews = ({ reviewsPromise }) => {
   const reviews = use(reviewsPromise);
 
   return (
-    <>
+    <div className="mb-30">
       <div className="flex flex-col justify-between items-center gap-7 mb-20">
         <img src={topCustomer} alt="Top Customer" className="mb-3" />
-        <h2 className="text-center text-4xl font-bold">
+        <h2 className="text-center text-4xl font-bold text-secondary">
           What our customers are sayings
         </h2>
         <p className="text-center text-[#606060] w-1/3">
@@ -24,7 +24,7 @@ const Reviews = ({ reviewsPromise }) => {
         </p>
       </div>
 
-      <div className="mb-40">
+      <div>
         <Swiper
           effect="coverflow"
           grabCursor={true}
@@ -56,7 +56,7 @@ const Reviews = ({ reviewsPromise }) => {
           ))}
         </Swiper>
       </div>
-    </>
+    </div>
   );
 };
 

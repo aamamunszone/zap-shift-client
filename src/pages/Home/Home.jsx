@@ -5,6 +5,7 @@ import OurServices from './components/OurServices/OurServices';
 import TrustedBy from './components/TrustedBy/TrustedBy';
 import Reviews from './components/Reviews/Reviews';
 import Loader from '../../components/common/Loader/Loader';
+import FAQ from './components/FAQ/FAQ';
 
 const reviewsPromise = fetch('/data/reviews.json').then((res) => res.json());
 
@@ -38,6 +39,11 @@ const Home = () => {
         <Suspense fallback={<Loader />}>
           <Reviews reviewsPromise={reviewsPromise} />
         </Suspense>
+      </section>
+
+      {/* FAQ Section */}
+      <section>
+        <FAQ />
       </section>
     </div>
   );
