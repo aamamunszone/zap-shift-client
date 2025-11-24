@@ -202,14 +202,6 @@ const Register = () => {
               {errors.password.message}
             </p>
           )}
-          <label className="label pt-2 text-sm">
-            <Link
-              to="/forgot-password"
-              className="hover:underline underline-offset-4 text-secondary"
-            >
-              Forgot password?
-            </Link>
-          </label>
         </div>
 
         {/* Submit Button */}

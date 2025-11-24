@@ -10,6 +10,7 @@ import Login from '../pages/Auth/Login/Login';
 import Register from '../pages/Auth/Register/Register';
 import PrivateRoute from './PrivateRoute';
 import BeARider from '../pages/BeARider/BeARider';
+import ForgotPassword from '../pages/Auth/ForgotPassword/ForgotPassword';
 
 export const router = createBrowserRouter([
   // MainLayout Routes
@@ -48,6 +49,7 @@ export const router = createBrowserRouter([
       { index: true, loader: () => redirect('login') },
       { path: 'login', Component: Login },
       { path: 'register', Component: Register },
+      { path: 'forgot-password', Component: ForgotPassword },
     ],
   },
 
