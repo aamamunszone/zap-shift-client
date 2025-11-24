@@ -116,10 +116,27 @@ const Register = () => {
           <label className="label pb-1 font-medium">Image</label>
           <input
             type="file"
+            accept="image/*"
             {...register('image', {
               required: {
                 value: true,
                 message: 'Image file is required.',
+              },
+              validate: {
+                // Ensure only 1 file
+                singleFile: (files) =>
+                  files?.length === 1 || 'Please upload only 1 image file.',
+
+                // Max size (2MB)
+                maxSize: (files) =>
+                  files?.[0]?.size <= 2 * 1024 * 1024 ||
+                  'Image must be less than 2MB.',
+
+                // Only image type
+                validType: (files) =>
+                  ['image/jpeg', 'image/png', 'image/webp'].includes(
+                    files?.[0]?.type
+                  ) || 'Only JPG, PNG or WEBP images are allowed.',
               },
             })}
             className="file-input w-full"
