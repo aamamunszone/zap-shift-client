@@ -1,16 +1,17 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
-import { Link, useNavigate } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import useAuth from '../../../hooks/useAuth';
 import toast from 'react-hot-toast';
-import { updateProfile } from 'firebase/auth';
 import { firebaseErrorMessage } from '../../../utils/firebaseErrors';
+import axios from 'axios';
 
 const Register = () => {
-  const { createUser, googleSignIn } = useAuth();
+  const { createUser, googleSignIn, updateUserProfile } = useAuth();
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const {
     register,
@@ -20,11 +21,31 @@ const Register = () => {
 
   const handleRegisterSubmit = async (data) => {
     // console.log(data);
+    const userName = data.name;
+    const userImage = data.image[0];
+
     try {
       const userCredential = await createUser(data.email, data.password);
-      await updateProfile(userCredential.user, {
-        displayName: data.name,
+
+      // Prepare form data for ImgBB
+      const formData = new FormData();
+      formData.append('image', userImage);
+
+      // Upload to ImgBB using Axios
+      const ImgBB_API_URL = `https://api.imgbb.com/1/upload?key=${
+        import.meta.env.VITE_IMGBB_APIKEY
+      }`;
+
+      const res = await axios.post(ImgBB_API_URL, formData);
+      // console.log('after image upload', res);
+      const imageURL = res.data.data.display_url;
+
+      // Update Firebase User profile with UserName and image URL
+      await updateUserProfile({
+        displayName: userName,
+        photoURL: imageURL,
       });
+
       const user = userCredential.user;
       // console.log(user);
       toast.success(
@@ -32,9 +53,10 @@ const Register = () => {
           user?.displayName || 'User'
         }! 🎉 Registration successful.`
       );
-      navigate('/');
+      navigate(location.state?.from?.pathname || '/', { replace: true });
     } catch (error) {
       const errorMessage = firebaseErrorMessage(error.code);
+      console.log(error.message);
       // console.log(errorMessage);
       toast.error(errorMessage);
     }
@@ -50,7 +72,7 @@ const Register = () => {
           user?.displayName || 'User'
         }! 🎉 Registration successful with Google.`
       );
-      navigate('/');
+      navigate(location.state?.from?.pathname || '/', { replace: true });
     } catch (error) {
       const errorMessage = firebaseErrorMessage(error.code);
       // console.log(errorMessage);
@@ -86,6 +108,25 @@ const Register = () => {
           />
           {errors.name && (
             <p className="text-sm text-error py-1.5">{errors.name.message}</p>
+          )}
+        </div>
+
+        {/* Image */}
+        <div>
+          <label className="label pb-1 font-medium">Image</label>
+          <input
+            type="file"
+            {...register('image', {
+              required: {
+                value: true,
+                message: 'Image file is required.',
+              },
+            })}
+            className="file-input w-full"
+          />
+          <label className="label pt-2 text-xs">Max size 2MB</label>
+          {errors.image && (
+            <p className="text-sm text-error py-1.5">{errors.image.message}</p>
           )}
         </div>
 
@@ -185,6 +226,7 @@ const Register = () => {
         Already have an account?{' '}
         <Link
           to="../login"
+          state={location.state}
           className="hover:underline underline-offset-4 text-blue-500 hover:text-blue-600 font-medium"
         >
           Login

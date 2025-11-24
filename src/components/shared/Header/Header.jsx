@@ -3,19 +3,40 @@ import Container from '../../common/Container/Container';
 import { Link } from 'react-router';
 import Logo from '../../common/Logo/Logo';
 import NavItem from './NavItem/NavItem';
+import useAuth from '../../../hooks/useAuth';
+import Loader from '../../common/Loader/Loader';
+import { firebaseErrorMessage } from '../../../utils/firebaseErrors';
+import toast from 'react-hot-toast';
 
 const Header = () => {
+  const { user, loading, signOutUser } = useAuth();
+
+  if (loading) {
+    return <Loader />;
+  }
+
+  const handleSignOut = async () => {
+    try {
+      await signOutUser();
+      toast.success('Successfully logged out! 👋');
+    } catch (error) {
+      const errorMessage = firebaseErrorMessage(error.code);
+      // console.log(errorMessage);
+      toast.error(errorMessage);
+    }
+  };
+
   const navItems = [
     { path: '/home', label: 'Home', public: true },
     { path: '/services', label: 'Services', public: true },
     { path: '/coverage', label: 'Coverage', public: true },
     { path: '/pricing', label: 'Pricing', public: true },
-    { path: '/be-a-rider', label: 'Be a Rider', private: true },
+    { path: '/be-a-rider', label: 'Be a Rider', public: true },
     { path: '/about-us', label: 'About Us', public: true },
   ];
 
   const filteredNavItems = navItems.filter(
-    (item) => item.public || item.private // when user comes then change the condition
+    (item) => item.public || (item.private && user)
   );
 
   return (
@@ -39,12 +60,31 @@ const Header = () => {
 
         {/* CTA Button */}
         <div className="navbar-end gap-2.5">
-          <Link
-            to="/auth"
-            className="px-5 py-2 text-[#606060] border border-[#DADADA] rounded-md font-medium"
-          >
-            Sign In
-          </Link>
+          {user ? (
+            <>
+              <div className="w-10 h-10 rounded-full overflow-hidden border border-green-500 p-0.5">
+                <img
+                  src={user?.photoURL}
+                  className="rounded-full"
+                  alt={user?.displayName}
+                  title={user?.displayName}
+                />
+              </div>
+              <button
+                onClick={handleSignOut}
+                className="px-5 py-2 text-[#606060] border border-[#DADADA] rounded-md font-medium cursor-pointer"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <Link
+              to="/auth"
+              className="px-5 py-2 text-[#606060] border border-[#DADADA] rounded-md font-medium"
+            >
+              Sign In
+            </Link>
+          )}
           <Link className="px-5 py-2 text-[#1F1F1F] bg-primary rounded-md font-medium">
             Be a Rider
           </Link>

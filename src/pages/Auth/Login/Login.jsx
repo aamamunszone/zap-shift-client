@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
-import { Link, useNavigate } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import useAuth from '../../../hooks/useAuth';
 import toast from 'react-hot-toast';
 import { firebaseErrorMessage } from '../../../utils/firebaseErrors';
@@ -10,6 +10,7 @@ const Login = () => {
   const { signInUser, googleSignIn } = useAuth();
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const {
     register,
@@ -26,7 +27,7 @@ const Login = () => {
       toast.success(
         `Congratulations ${user?.displayName || 'User'}! 🎉 Login successful.`
       );
-      navigate('/');
+      navigate(location.state?.from?.pathname || '/', { replace: true });
     } catch (error) {
       const errorMessage = firebaseErrorMessage(error.code);
       // console.log(errorMessage);
@@ -44,7 +45,7 @@ const Login = () => {
           user?.displayName || 'User'
         }! 🎉 Login successful with Google.`
       );
-      navigate('/');
+      navigate(location.state?.from?.pathname || '/');
     } catch (error) {
       const errorMessage = firebaseErrorMessage(error.code);
       // console.log(errorMessage);
@@ -142,6 +143,7 @@ const Login = () => {
         Don't have an account?{' '}
         <Link
           to="../register"
+          state={location.state}
           className="hover:underline underline-offset-4 text-blue-500 hover:text-blue-600 font-medium"
         >
           Create Account
