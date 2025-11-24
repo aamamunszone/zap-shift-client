@@ -1,17 +1,61 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
+import useAuth from '../../../hooks/useAuth';
+import toast from 'react-hot-toast';
+import { updateProfile } from 'firebase/auth';
+import { firebaseErrorMessage } from '../../../utils/firebaseErrors';
 
 const Register = () => {
+  const { createUser, googleSignIn } = useAuth();
+
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const handleRegisterSubmit = (data) => {
-    console.log(data);
+  const handleRegisterSubmit = async (data) => {
+    // console.log(data);
+    try {
+      const userCredential = await createUser(data.email, data.password);
+      await updateProfile(userCredential.user, {
+        displayName: data.name,
+      });
+      const user = userCredential.user;
+      // console.log(user);
+      toast.success(
+        `Congratulations ${
+          user?.displayName || 'User'
+        }! 🎉 Registration successful.`
+      );
+      navigate('/');
+    } catch (error) {
+      const errorMessage = firebaseErrorMessage(error.code);
+      // console.log(errorMessage);
+      toast.error(errorMessage);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      const userCredential = await googleSignIn();
+      const user = userCredential.user;
+      // console.log(user);
+      toast.success(
+        `Congratulations ${
+          user?.displayName || 'User'
+        }! 🎉 Registration successful with Google.`
+      );
+      navigate('/');
+    } catch (error) {
+      const errorMessage = firebaseErrorMessage(error.code);
+      // console.log(errorMessage);
+      toast.error(errorMessage);
+    }
   };
 
   return (
@@ -27,12 +71,21 @@ const Register = () => {
           <label className="label pb-1 font-medium">Full Name</label>
           <input
             type="text"
-            {...register('name', { required: true, maxLength: 20 })}
+            {...register('name', {
+              required: {
+                value: true,
+                message: 'Full name is required.',
+              },
+              maxLength: {
+                value: 30,
+                message: 'Full name cannot exceed 30 characters.',
+              },
+            })}
             placeholder="Enter your full name"
             className="input w-full"
           />
-          {errors.name?.type === 'required' && (
-            <p className="text-sm text-error py-1.5">Name is required</p>
+          {errors.name && (
+            <p className="text-sm text-error py-1.5">{errors.name.message}</p>
           )}
         </div>
 
@@ -41,12 +94,17 @@ const Register = () => {
           <label className="label pb-1 font-medium">Email</label>
           <input
             type="email"
-            {...register('email', { required: true })}
+            {...register('email', {
+              required: {
+                value: true,
+                message: 'Email address is required.',
+              },
+            })}
             placeholder="Enter your email"
             className="input w-full"
           />
-          {errors.email?.type === 'required' && (
-            <p className="text-sm text-error py-1.5">Email is required</p>
+          {errors.email && (
+            <p className="text-sm text-error py-1.5">{errors.email.message}</p>
           )}
         </div>
 
@@ -56,26 +114,34 @@ const Register = () => {
           <input
             type="password"
             {...register('password', {
-              required: true,
-              minLength: 6,
-              pattern: /^(?=.*[A-Za-z])(?=.*\d).{6,}$/,
+              required: {
+                value: true,
+                message: 'Password is required.',
+              },
+              minLength: {
+                value: 6,
+                message: 'Password must be at least 6 characters.',
+              },
+              validate: {
+                hasUppercase: (value) =>
+                  /[A-Z]/.test(value) ||
+                  'Must include at least one uppercase letter.',
+                hasLowercase: (value) =>
+                  /[a-z]/.test(value) ||
+                  'Must include at least one lowercase letter.',
+                hasNumber: (value) =>
+                  /\d/.test(value) || 'Must include at least one number.',
+                hasSpecial: (value) =>
+                  /[!@#$%^&*(),.?":{}|<>]/.test(value) ||
+                  'Must include at least one special character.',
+              },
             })}
             placeholder="Enter password"
             className="input w-full"
           />
-          {errors.password?.type === 'required' && (
-            <p className="text-sm text-error py-1.5">Password is required</p>
-          )}
-
-          {errors.password?.type === 'minLength' && (
+          {errors.password && (
             <p className="text-sm text-error py-1.5">
-              Password should be 6 characters
-            </p>
-          )}
-
-          {errors.password?.type === 'pattern' && (
-            <p className="text-sm text-error py-1.5">
-              Password must contain at least 1 letter and 1 number
+              {errors.password.message}
             </p>
           )}
           <label className="label pt-2 text-sm">
@@ -106,6 +172,7 @@ const Register = () => {
 
       {/* Google Register */}
       <button
+        onClick={handleGoogleSignIn}
         type="submit"
         className="btn w-full bg-white border border-gray-300 hover:bg-gray-100 flex items-center gap-2"
       >
