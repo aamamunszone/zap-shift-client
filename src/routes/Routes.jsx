@@ -14,6 +14,9 @@ import ForgotPassword from '../pages/Auth/ForgotPassword/ForgotPassword';
 import SendParcel from '../pages/SendParcel/SendParcel';
 import DashboardLayout from '../layouts/DashboardLayout/DashboardLayout';
 import MyParcels from '../pages/Dashboard/MyParcels/MyParcels';
+import Payment from '../pages/Dashboard/Payment/Payment';
+import PaymentSuccess from '../pages/Dashboard/Payment/components/PaymentSuccess/PaymentSuccess';
+import PaymentCancelled from '../pages/Dashboard/Payment/components/PaymentCancelled/PaymentCancelled';
 
 export const router = createBrowserRouter([
   // Main Layout Routes
@@ -65,7 +68,12 @@ export const router = createBrowserRouter([
         <DashboardLayout />
       </PrivateRoute>
     ),
-    children: [{ path: 'my-parcels', Component: MyParcels }],
+    children: [
+      { path: 'my-parcels', Component: MyParcels },
+      { path: 'payment/:parcelId', Component: Payment },
+      { path: 'payment-success', Component: PaymentSuccess },
+      { path: 'payment-cancelled', Component: PaymentCancelled },
+    ],
   },
 
   // Auth Layout Routes
