@@ -11,9 +11,12 @@ import Register from '../pages/Auth/Register/Register';
 import PrivateRoute from './PrivateRoute';
 import BeARider from '../pages/BeARider/BeARider';
 import ForgotPassword from '../pages/Auth/ForgotPassword/ForgotPassword';
+import SendParcel from '../pages/SendParcel/SendParcel';
+import DashboardLayout from '../layouts/DashboardLayout/DashboardLayout';
+import MyParcels from '../pages/Dashboard/MyParcels/MyParcels';
 
 export const router = createBrowserRouter([
-  // MainLayout Routes
+  // Main Layout Routes
   {
     path: '/',
     Component: MainLayout,
@@ -23,7 +26,20 @@ export const router = createBrowserRouter([
       { path: 'home', Component: Home },
       {
         path: 'coverage',
-        Component: Coverage,
+        element: (
+          <PrivateRoute>
+            <Coverage />
+          </PrivateRoute>
+        ),
+        loader: () => fetch('/data/warehouses.json').then((res) => res.json()),
+      },
+      {
+        path: 'send-parcel',
+        element: (
+          <PrivateRoute>
+            <SendParcel />
+          </PrivateRoute>
+        ),
         loader: () => fetch('/data/warehouses.json').then((res) => res.json()),
       },
       {
@@ -41,7 +57,18 @@ export const router = createBrowserRouter([
     ],
   },
 
-  // AuthLayout Routes
+  // Dashboard Layout Routes
+  {
+    path: 'dashboard',
+    element: (
+      <PrivateRoute>
+        <DashboardLayout />
+      </PrivateRoute>
+    ),
+    children: [{ path: 'my-parcels', Component: MyParcels }],
+  },
+
+  // Auth Layout Routes
   {
     path: '/auth',
     Component: AuthLayout,
