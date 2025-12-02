@@ -6,12 +6,15 @@ import useAuth from '../../../hooks/useAuth';
 import toast from 'react-hot-toast';
 import { firebaseErrorMessage } from '../../../utils/firebaseErrors';
 import axios from 'axios';
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
 
 const Register = () => {
   const { createUser, googleSignIn, updateUserProfile } = useAuth();
 
   const navigate = useNavigate();
   const location = useLocation();
+
+  const axiosPrivate = useAxiosSecure();
 
   const {
     register,
@@ -54,6 +57,18 @@ const Register = () => {
         }! 🎉 Registration successful.`
       );
       navigate(location.state?.from?.pathname || '/', { replace: true });
+
+      // Create user in the database
+      const userInfo = {
+        email: data.email,
+        displayName: data.name,
+        photoURL: imageURL,
+      };
+      axiosPrivate.post('/users', userInfo).then((res) => {
+        if (res.data.insertedId) {
+          console.log('User created in the database');
+        }
+      });
     } catch (error) {
       const errorMessage = firebaseErrorMessage(error.code);
       console.log(error.message);
@@ -73,6 +88,18 @@ const Register = () => {
         }! 🎉 Registration successful with Google.`
       );
       navigate(location.state?.from?.pathname || '/', { replace: true });
+
+      // Create user in the database
+      const userInfo = {
+        email: user.email,
+        displayName: user.displayName,
+        photoURL: user.photoURL,
+      };
+      axiosPrivate.post('/users', userInfo).then((res) => {
+        if (res.data.insertedId) {
+          console.log('User created in the database');
+        }
+      });
     } catch (error) {
       const errorMessage = firebaseErrorMessage(error.code);
       // console.log(errorMessage);

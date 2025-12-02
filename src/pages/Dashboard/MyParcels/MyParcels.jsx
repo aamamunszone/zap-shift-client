@@ -77,7 +77,7 @@ const MyParcels = () => {
           {/* head */}
           <thead>
             <tr>
-              <th></th>
+              <th>SL No.</th>
               <th>Name</th>
               <th>Cost</th>
               <th>Payment</th>
